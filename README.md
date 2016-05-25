@@ -1,0 +1,3 @@
+# glsl-helper
+glsl helper cpp class, from Graphics and Shaders 
+...
