@@ -76,6 +76,7 @@ GLSLProgram::GLSLProgram( )
 	if( CanDoFragmentShaders )		fprintf( stderr, "fragment shaders, " );
 	if( CanDoBinaryFiles )			fprintf( stderr, "binary shader files " );
 	fprintf( stderr, "\n" );
+	IncludeGstap = false;
 }
 
 
@@ -100,7 +101,6 @@ GLSLProgram::CreateHelper( char *file0, ... )
 	GLchar *buf;
 	Valid = true;
 
-	IncludeGstap = false;
 	Cshader = Vshader = TCshader = TEshader = Gshader = Fshader = 0;
 	Program = 0;
 	AttributeLocs.clear();
@@ -669,23 +669,24 @@ GLSLProgram::IsExtensionSupported( const char *extension )
 	if( extension == NULL  ||  extension[0] == '\0' )
 		return false;
 
-	GLubyte *where = (GLubyte *) strchr( extension, ' ' );
-	if( where != 0 )
+	GLubyte *wh = (GLubyte *) strchr( extension, ' ' );
+	if( wh != 0 )
 		return false;
 
 	// get the full list of extensions:
 
 	const GLubyte *extensions = glGetString( GL_EXTENSIONS );
+	if(extensions == 0) return false;
 
 	for( const GLubyte *start = extensions; ; )
 	{
-		where = (GLubyte *) strstr( (const char *) start, extension );
-		if( where == 0 )
+		wh = (GLubyte *) strstr( (const char *) start, extension );
+		if( wh == 0 )
 			return false;
 
-		GLubyte *terminator = where + strlen(extension);
+		GLubyte *terminator = wh + strlen(extension);
 
-		if( where == start  ||  *(where - 1) == '\n'  ||  *(where - 1) == ' ' )
+		if( wh == start  ||  *(wh - 1) == '\n'  ||  *(wh - 1) == ' ' )
 			if( *terminator == ' '  ||  *terminator == '\n'  ||  *terminator == '\0' )
 				return true;
 		start = terminator;
