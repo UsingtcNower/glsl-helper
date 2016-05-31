@@ -262,6 +262,7 @@ GLSLProgram::CreateHelper( char *file0, ... )
 		fclose( in ) ;
 
 		GLchar *strings[2];
+		n = 0;
 
 		if( IncludeGstap )
 		{
