@@ -3,7 +3,7 @@
 #include <cstdio>
 
 //#define GPGPU
-/*
+
 const int screenWidth = 4000;	   // width of the screen window in pixels 
 const int screenHeight = 2000;	   // height of the screen window in pixels
 GLuint texId[2];
@@ -40,7 +40,7 @@ cv::Mat img1;
 		img.cols, img.rows, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	//// tex1, ‰≥ˆ
+	//// tex1,ËæìÂá∫
 	//glActiveTexture(GL_TEXTURE1);
 	//// can replace by GL_TEXTURE_RECTANGLE_ARB
 	//glBindTexture(GL_TEXTURE_2D, texId[1]);
@@ -49,7 +49,7 @@ cv::Mat img1;
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	////Œ∆¿Ìª∫¥Êπÿ¡™µΩ÷°ª∫¥Ê∂‘œÛ(FBO)
+	////Á∫πÁêÜÁºìÂ≠òÂÖ≥ËÅîÂà∞Â∏ßÁºìÂ≠òÂØπË±°(FBO)
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 	//	GL_TEXTURE_2D, texId[1], 0);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img1.cols, img1.rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -57,7 +57,7 @@ cv::Mat img1;
 	//	img1.cols, img1.rows, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	////glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	//// Ω´÷°ª∫¥Ê∂‘œÛ…Ë÷√Œ™µ±«∞ªÊ÷∆ª∫¥Ê
+	//// Â∞ÜÂ∏ßÁºìÂ≠òÂØπË±°ËÆæÁΩÆ‰∏∫ÂΩìÂâçÁªòÂà∂ÁºìÂ≠ò
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 		
@@ -137,4 +137,3 @@ void main(int argc, char ** argv)
 #endif
 	cv::imwrite("d:\\11.bmp", img1);
 }
-*/
