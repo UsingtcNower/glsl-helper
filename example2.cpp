@@ -2,16 +2,16 @@
 #include "glslprogram.h"
 #include "GL/glut.h"
 
-
-const int screenWidth = 640;	   // width of the screen window in pixels 
-const int screenHeight = 360;	   // height of the screen window in pixels
+/*
+const int screenWidth = 936;	   // width of the screen window in pixels 
+const int screenHeight = 914;	   // height of the screen window in pixels
 GLuint texId[3];
 cv::Mat img;
 
 //<<<<<<<<<<<<<<<<<<<<<<< myInit >>>>>>>>>>>>>>>>>>>>
  void myInit(void)
  {
-	img = cv::imread("D:\\code\\glman\\shaders\\private\\me.bmp");
+	img = cv::imread("D:\\code\\glman\\shaders\\private\\showgirl.bmp");
 	if(img.empty()) {
 		printf("Error imread.\n");
 		return ;
@@ -33,7 +33,7 @@ cv::Mat img;
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glRotatef(180, 0, 0, 1);
+	glRotatef(180, 0, 0, -1);
 }
 
 //<<<<<<<<<<<<<<<<<<<<<<<< myDisplay >>>>>>>>>>>>>>>>>
@@ -70,11 +70,12 @@ void glslProcess()
 	glprog.SetVerbose(true);
 
 	if(!glprog.Create("D:\\code\\glman\\shaders\\private\\mopi_meibai.vert", "D:\\code\\glman\\shaders\\private\\mopi_meibai.frag")) {
+	//if(!glprog.Create("D:\\code\\glman\\shaders\\texture.vert", "D:\\code\\glman\\shaders\\texture.frag")) {
 		return ;
 	}
-	glprog.SetUniform("uMopiSigma", (float)1.0);
+	glprog.SetUniform("uMopiSigma", (float)0.01);
 	glprog.SetUniform("uDelta", (float)0.01);
-	glprog.SetUniform("uWhiteGain", (float)10);
+	glprog.SetUniform("uWhitenGain", (float)10);
 	glprog.Use();
 
 }
@@ -98,3 +99,4 @@ void main(int argc, char ** argv)
 	glutMainLoop(); 		     // go into a perpetual loop
 	//cv::imwrite("d:\\11.bmp", img);
 }
+*/
