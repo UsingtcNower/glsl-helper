@@ -49,7 +49,9 @@ cv::Mat img1;
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glRotatef(180, 0, 0, -1);
+	glViewport(0, 0, screenWidth, screenHeight);
+	glRotatef(90, 0, 0, -1);
+
 }
 
 //<<<<<<<<<<<<<<<<<<<<<<<< myDisplay >>>>>>>>>>>>>>>>>
@@ -93,7 +95,7 @@ void glslProcess()
 
 void readBack()
 {
-	glReadBuffer(fb);
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
 	glReadPixels(0, 0, img1.cols, img1.rows, GL_RGB, GL_UNSIGNED_BYTE, img1.data);
 }
 
@@ -115,11 +117,9 @@ void main(int argc, char ** argv)
 		return ;
 	}
 	myInit(); 
-#ifdef FBO
-	renderFBO();
-#endif
 	glslProcess();
 #ifdef FBO
+	renderFBO();
 	readBack();
 	cv::cvtColor(img1, img1, CV_BGR2RGB);
 	printf("output img, width is %d, height is %d\n", img1.cols, img1.rows);
