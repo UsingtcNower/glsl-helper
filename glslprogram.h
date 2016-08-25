@@ -10,10 +10,10 @@
 #include <windows.h>
 #endif
 
-#include "glew.h"
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "glut.h"
+#include <GL/glut.h>
 #include <map>
 #include <stdarg.h>
 
@@ -21,6 +21,24 @@
 #define GL_COMPUTE_SHADER	0x91B9
 #endif
 
+#ifndef GL_GEOMETRY_SHADER
+#define GL_GEOMETRY_SHADER                0x8DD9
+#endif
+
+#ifndef GL_TESS_EVALUATION_SHADER
+#define GL_TESS_EVALUATION_SHADER         0x8E87
+#endif
+
+#ifndef GL_TESS_CONTROL_SHADER
+#define GL_TESS_CONTROL_SHADER            0x8E88
+#endif
+
+#ifndef GL_ARB_get_program_binary
+#define GL_PROGRAM_BINARY_RETRIEVABLE_HINT 0x8257
+#define GL_PROGRAM_BINARY_LENGTH          0x8741
+#define GL_NUM_PROGRAM_BINARY_FORMATS     0x87FE
+#define GL_PROGRAM_BINARY_FORMATS         0x87FF
+#endif
 
 inline int GetOSU( int flag )
 {
