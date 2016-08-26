@@ -383,7 +383,9 @@ void
 GLSLProgram::DispatchCompute( GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z )
 {
 	Use( );
+#ifdef WIN32
 	glDispatchCompute( num_groups_x, num_groups_y, num_groups_z );
+#endif
 }
 
 
@@ -742,6 +744,7 @@ CheckGlErrors( const char* caller )
 void
 GLSLProgram::SaveProgramBinary( const char * fileName, GLenum * format )
 {
+#ifdef WIN32
 	glProgramParameteri( this->Program, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, GL_TRUE );
 	GLint length;
 	glGetProgramiv( this->Program, GL_PROGRAM_BINARY_LENGTH, &length );
@@ -759,12 +762,14 @@ GLSLProgram::SaveProgramBinary( const char * fileName, GLenum * format )
 	fwrite( buffer, length, 1, fpout );
 	fclose( fpout );
 	delete [ ] buffer;
+#endif
 }
 
 
 void
 GLSLProgram::LoadProgramBinary( const char * fileName, GLenum format )
 {
+#ifdef WIN32
 	FILE *fpin = fopen( fileName, "rb" );
 	if( fpin == NULL )
 	{
@@ -789,6 +794,7 @@ GLSLProgram::LoadProgramBinary( const char * fileName, GLenum format )
 		fprintf( stderr, "Did not successfully load the GLSL binary file '%s'\n", fileName );
 		return;
 	}
+#endif
 }
 
 
