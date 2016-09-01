@@ -1,11 +1,12 @@
 #include <opencv2/opencv.hpp>
 #include "glslprogram.h"
 #include <cstdio>
+//#include "glfw3.h"
 
 #define FBO
 
-const int screenWidth = 1440;	   // width of the screen window in pixels 
-const int screenHeight = 1440;	   // height of the screen window in pixels
+const int screenWidth = 200;	   // width of the screen window in pixels 
+const int screenHeight = 200;	   // height of the screen window in pixels
 GLuint texId[3];
 GLuint fb;
 cv::Mat img;
@@ -28,6 +29,7 @@ cv::Mat img1;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.cols, img.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+	
 
 #ifdef FBO
 	img1 = cv::Mat(screenWidth, screenHeight, CV_8UC3);
@@ -41,6 +43,7 @@ cv::Mat img1;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img1.cols, img1.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, img1.data);
+	
 	glGenFramebuffers(1, &fb);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
@@ -57,6 +60,8 @@ cv::Mat img1;
 //<<<<<<<<<<<<<<<<<<<<<<<< myDisplay >>>>>>>>>>>>>>>>>
 void renderFBO(void)
 {
+	glTexSubImage2D(texId[0],0, 0, 0, img.cols, img.rows, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+	glTexSubImage2D(texId[1], 0, 0, 0, img1.cols, img1.rows, GL_RGB, GL_UNSIGNED_BYTE, img1.data);
 #ifdef FBO
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 #endif
@@ -102,11 +107,18 @@ void readBack()
 
 void main(int argc, char ** argv)
 {
-	glutInit(&argc, argv);          // initialize the toolkit
+	int argc_ = 1;
+	char *argv_[1] = {(char *)"something"};
+	glutInit(&argc_, argv_);          // initialize the toolkit
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // set the display mode
-	glutInitWindowSize(1440, 1440); // set the window size
+	glutInitWindowSize(screenWidth, screenWidth); // set the window size
 	glutInitWindowPosition(0, 0); // set the window position on screen
 	glutCreateWindow("opengl fbo example"); // open the screen window
+	//if(!glfwInit()) {
+	//	printf("glfwinit fail");
+	//	return ;
+	//}
+	
 #ifndef FBO
 	glutDisplayFunc(renderFBO);     // register the redraw function
 #endif
@@ -119,12 +131,20 @@ void main(int argc, char ** argv)
 	myInit(); 
 	glslProcess();
 #ifdef FBO
-	renderFBO();
-	readBack();
-	cv::cvtColor(img1, img1, CV_BGR2RGB);
-	printf("output img, width is %d, height is %d\n", img1.cols, img1.rows);
-	cv::imwrite("d:\\11.bmp", img1);
-	getchar();
+	for(int i=0;i<2;++i) {
+		char filename[30];
+		sprintf(filename, "D:\\%d.bmp", i+1);
+		img = cv::imread(filename);
+		cv::cvtColor(img, img, CV_BGR2RGB);
+		renderFBO();
+		readBack();
+		cv::cvtColor(img1, img1, CV_BGR2RGB);
+		printf("output img, width is %d, height is %d\n", img1.cols, img1.rows);
+		
+		sprintf(filename, "D:\\%d.bmp", 20+i);
+		cv::imwrite(filename, img1);
+	}
+	//getchar();
 #else
 	glutMainLoop(); 		     // go into a perpetual loop
 #endif
