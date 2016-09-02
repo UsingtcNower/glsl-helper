@@ -15,7 +15,7 @@ cv::Mat img1;
 //<<<<<<<<<<<<<<<<<<<<<<< myInit >>>>>>>>>>>>>>>>>>>>
  void myInit(void)
  {
-	img = cv::imread("d:\\1.bmp");
+	img = cv::imread("1.png");
 	if(img.empty()) {
 		printf("Error imread.\n");
 		return ;
@@ -60,8 +60,10 @@ cv::Mat img1;
 //<<<<<<<<<<<<<<<<<<<<<<<< myDisplay >>>>>>>>>>>>>>>>>
 void renderFBO(void)
 {
-	glTexSubImage2D(texId[0],0, 0, 0, img.cols, img.rows, GL_RGB, GL_UNSIGNED_BYTE, img.data);
-	glTexSubImage2D(texId[1], 0, 0, 0, img1.cols, img1.rows, GL_RGB, GL_UNSIGNED_BYTE, img1.data);
+	glBindTexture(GL_TEXTURE_2D, texId[0]);
+	glTexSubImage2D(GL_TEXTURE_2D,0, 0, 0, img.cols, img.rows, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+	glBindTexture(GL_TEXTURE_2D, texId[1]);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, img1.cols, img1.rows, GL_RGB, GL_UNSIGNED_BYTE, img1.data);
 #ifdef FBO
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 #endif
@@ -133,13 +135,15 @@ void main(int argc, char ** argv)
 #ifdef FBO
 	for(int i=0;i<2;++i) {
 		char filename[30];
-		sprintf(filename, "D:\\%d.bmp", i+1);
+		sprintf(filename, "%d.png", i+1);
 		img = cv::imread(filename);
+		if(img.empty())
+			return ;
 		cv::cvtColor(img, img, CV_BGR2RGB);
 		renderFBO();
 		readBack();
-		cv::cvtColor(img1, img1, CV_BGR2RGB);
-		printf("output img, width is %d, height is %d\n", img1.cols, img1.rows);
+		//cv::cvtColor(img1, img1, CV_BGR2RGB);
+		printf("output img, width is %d, height is %d, %d\n", img1.cols, img1.rows, img1.channels());
 		
 		sprintf(filename, "D:\\%d.bmp", 20+i);
 		cv::imwrite(filename, img1);
