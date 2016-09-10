@@ -52,6 +52,36 @@ GetExtension( char *file )
 	return NULL;
 }
 
+bool checkFramebufferStatus() {
+    GLenum status;
+    status = (GLenum) glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+    switch(status) {
+    case GL_FRAMEBUFFER_COMPLETE_EXT:
+	return true;
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+	printf("Framebuffer incomplete, incomplete attachment\n");
+	return false;
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+	printf("Framebuffer incomplete, missing attachment\n");
+	return false;
+    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+	printf("Framebuffer incomplete, attached images must have same dimensions\n");
+	return false;
+    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+	printf("Framebuffer incomplete, attached images must have same format\n");
+	return false;
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+	printf("Framebuffer incomplete, missing draw buffer\n");
+	return false;
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+	printf("Framebuffer incomplete, missing read buffer\n");
+	return false;
+    case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+	printf("Unsupported framebuffer format\n");
+	return false;
+    }
+    return false;
+}
 
 GLSLProgram::GLSLProgram( )
 {
@@ -383,9 +413,7 @@ void
 GLSLProgram::DispatchCompute( GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z )
 {
 	Use( );
-#ifdef WIN32
 	glDispatchCompute( num_groups_x, num_groups_y, num_groups_z );
-#endif
 }
 
 
@@ -744,7 +772,6 @@ CheckGlErrors( const char* caller )
 void
 GLSLProgram::SaveProgramBinary( const char * fileName, GLenum * format )
 {
-#ifdef WIN32
 	glProgramParameteri( this->Program, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, GL_TRUE );
 	GLint length;
 	glGetProgramiv( this->Program, GL_PROGRAM_BINARY_LENGTH, &length );
@@ -762,14 +789,12 @@ GLSLProgram::SaveProgramBinary( const char * fileName, GLenum * format )
 	fwrite( buffer, length, 1, fpout );
 	fclose( fpout );
 	delete [ ] buffer;
-#endif
 }
 
 
 void
 GLSLProgram::LoadProgramBinary( const char * fileName, GLenum format )
 {
-#ifdef WIN32
 	FILE *fpin = fopen( fileName, "rb" );
 	if( fpin == NULL )
 	{
@@ -794,7 +819,6 @@ GLSLProgram::LoadProgramBinary( const char * fileName, GLenum format )
 		fprintf( stderr, "Did not successfully load the GLSL binary file '%s'\n", fileName );
 		return;
 	}
-#endif
 }
 
 
