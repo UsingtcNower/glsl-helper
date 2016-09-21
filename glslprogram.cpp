@@ -107,6 +107,17 @@ GLSLProgram::GLSLProgram( )
 	if( CanDoBinaryFiles )			fprintf( stderr, "binary shader files " );
 	fprintf( stderr, "\n" );
 	IncludeGstap = false;
+	shaders.clear();
+}
+
+GLSLProgram::~GLSLProgram()
+{
+	Use(0);
+	for(int i=0;i<shaders.size();++i) {
+		glDetachShader(Program, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+	glDeleteProgram(Program);
 }
 
 
@@ -266,7 +277,7 @@ GLSLProgram::CreateHelper( char *file0, ... )
 				shader = glCreateShader( GL_FRAGMENT_SHADER );
 				break;
 		}
-
+		shaders.push_back(shader);
 
 		// read the shader source into a buffer:
 
@@ -611,6 +622,19 @@ GLSLProgram::SetUniform( char* name, float val )
 	}
 };
 
+void
+GLSLProgram::SetUniform(char *name, float val0, float val1)
+{
+	int loc;
+	if((loc = GetUniformLocation(name)) >= 0)
+	{
+		CheckGlErrors("GetUniformLocation");
+		this->Use();
+		CheckGlErrors("Use");
+		glUniform2f(loc, val0, val1);
+		CheckGlErrors("glUniform2f");
+	}
+}
 
 void
 GLSLProgram::SetUniform( char* name, float val0, float val1, float val2 )
