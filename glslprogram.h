@@ -16,6 +16,7 @@
 #include <GL/glut.h>
 #include <map>
 #include <stdarg.h>
+#include <vector>
 
 #ifndef GL_COMPUTE_SHADER
 #define GL_COMPUTE_SHADER	0x91B9
@@ -57,6 +58,7 @@ class GLSLProgram
 	char *			Vfile;
 	GLuint			Vshader;
 	bool			Verbose;
+	std::vector<GLuint>	shaders;
 
 	static int		CurrentProgram;
 
@@ -76,6 +78,7 @@ class GLSLProgram
 
   public:
 		GLSLProgram( );
+		~GLSLProgram();
 
 	bool	Create( char *, char * = NULL, char * = NULL, char * = NULL, char * = NULL, char * = NULL );
 	void	DispatchCompute( GLuint, GLuint = 1, GLuint = 1 );
@@ -104,6 +107,7 @@ class GLSLProgram
 	void	SetOutputTopology( GLenum );
 	void	SetUniform( char *, int );
 	void	SetUniform( char *, float );
+	void	SetUniform( char *, float, float);
 	void	SetUniform( char *, float, float, float );
 	void	SetUniform( char *, float[3] );
 #ifdef VEC3_H
